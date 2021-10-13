@@ -1,4 +1,0 @@
----
-# tasks file for install_k8s
-- include: install_docker.yml
-- include: install_kubernetes.yml

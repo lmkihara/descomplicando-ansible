@@ -1,4 +1,0 @@
----
-# tasks file for criando-instancias
-#- include: provisioning.yml
-- include: provisioning-azure.yml
