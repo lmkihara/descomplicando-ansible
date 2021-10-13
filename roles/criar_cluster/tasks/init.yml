@@ -1,0 +1,48 @@
+---
+- name: removendo cluster antigo
+  command:
+    kubeadm reset --force
+  register: removendo_cluster
+
+- name: iniciando novo cluster
+  command:
+    kubeadm init
+  register: iniciando_cluster
+
+- name: criando diretorio .kube
+  file:
+    path: ~/.kube
+    state: directory
+
+- name: criando um link simbolico do admin.conf
+  file:
+    src: /etc/kubernetes/admin.conf
+    dest: ~/.kube
+    state: link
+
+- name: Configurando flannel
+  shell: kubectl apply -f {{ flannel_url }}
+  register: flannel_deploy
+
+- name: obtendo o token do cluster
+  shell: kubeadm token list | cut -d ' ' -f1 | sed -n '2p'
+  register: token
+
+- name: ca hash
+  shell: openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+  register: hash
+
+- name: adicionando o token e hash num dummy host
+  add_host:
+    name: "K8S_INFO"
+    token: "{{ token.stdout }}"
+    hash: "{{ hash.stdout }}"
+
+- name:
+  debug:
+    msg: "[MASTER] K8S_INFO: Token {{ hostvars['K8S_INFO']['token'] }}"
+
+- name:
+  debug:
+    msg: "[MASTER] K8S_INFO: Hash {{ hostvars['K8S_INFO']['hash'] }}"
+
