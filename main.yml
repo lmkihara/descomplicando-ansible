@@ -1,0 +1,25 @@
+- hosts: local
+  roles:
+    - { role: criando_instancias, tags: ["provisionando"] }
+
+- hosts: container
+  become: yes
+  pre_tasks:
+    - name: 'Atualizando repos'
+      raw: 'apt update'
+    - name: 'Instalando python'
+      raw: 'apt install -y python'
+    - name: 'Instalando pacotes necessarios'
+      raw: 'apt install -y apt-transport-https ca-certificates curl'
+  roles:
+    - { role: instalar_k8s, tags: ["instalar_kubernetes"] }
+
+      #- hosts: master
+      #  become: yes
+      #  roles:
+      #    - { role: criar_cluster, tags: ["criar_cluster_k8s"] }
+      #
+      #- hosts: workers
+      #  become: yes
+      #  roles:
+      #    - { role: ingressar_workers, tags: ["ingressar_workers"] }
