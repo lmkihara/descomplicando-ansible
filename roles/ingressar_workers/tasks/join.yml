@@ -1,0 +1,9 @@
+---
+- name: removendo cluster
+  command:
+    kubeadm reset --force
+  register: removendo_cluster
+
+- name: adicionando os workers no cluster
+  shell: kubeadm join --token={{ hostvars['K8S_CLUSTER']['token'] }} --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_CLUSTER']['hash'] }} {{ K8S_MASTER_NODE_IP }}:{{ K8S_API_SECURE_PORT }}
+  register: join_cluster
