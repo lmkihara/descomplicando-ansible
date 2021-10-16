@@ -25,9 +25,65 @@
         source_address_prefix:
           - "0.0.0.0/0"
         direction: Inbound
+      - name: kube-api server
+        protocol: Tcp
+        destination_port_range: 6443
+        priority: 102
+        access: Allow
+        source_address_prefix:
+          - "0.0.0.0/0"
+        direction: Inbound
+      - name: etcd api
+        protocol: Tcp
+        destination_port_range: 2379
+        priority: 103
+        access: Allow
+        source_address_prefix:
+          - "0.0.0.0/0"
+        direction: Inbound
+      - name: kubelet api
+        protocol: Tcp
+        destination_port_range: 10250
+        priority: 104
+        access: Allow
+        source_address_prefix:
+          - "0.0.0.0/0"
+        direction: Inbound
+      - name: kube-scheduler
+        protocol: Tcp
+        destination_port_range: 10251
+        priority: 105
+        access: Allow
+        source_address_prefix:
+          - "0.0.0.0/0"
+        direction: Inbound
+      - name: kube controller manager
+        protocol: Tcp
+        destination_port_range: 10252
+        priority: 106
+        access: Allow
+        source_address_prefix:
+          - "0.0.0.0/0"
+        direction: Inbound
+      - name: kubelet api read only
+        protocol: Tcp
+        destination_port_range: 10255
+        priority: 107
+        access: Allow
+        source_address_prefix:
+          - "0.0.0.0/0"
+        direction: Inbound
+      - name: nodeport service
+        protocol: Tcp
+        destination_port_range: 30000
+        priority: 108
+        access: Allow
+        source_address_prefix:
+          - "0.0.0.0/0"
+        direction: Inbound
       - name: allow all
         protocol: "*"
-        priority: 102
+        priority: 109
         access: Allow
         direction: Outbound
   register: sg
@@ -102,7 +158,7 @@
   local_action:
     module: lineinfile
     path: ./hosts
-    insertafter: "master"
+    insertafter: '\[master]'
     firstmatch: yes
     line: "{{ pub_ip_info.publicipaddresses[item].ip_address }}"
   loop:
@@ -112,7 +168,7 @@
   local_action:
     module: lineinfile
     path: ./hosts
-    insertafter: "worker"
+    insertafter: '\[workers]'
     firstmatch: yes
     line: "{{ pub_ip_info.publicipaddresses[item].ip_address }}"
   loop:
@@ -124,7 +180,18 @@
   local_action:
     module: lineinfile
     path: ./hosts
-    insertafter: "^worker:vars"
+    insertafter: '\[workers:vars]'
     line: "K8S_MASTER_NODE_IP={{ priv_ip_info.networkinterfaces[item].ip_configurations[0].private_ip_address }}"
   loop:
     - 0
+
+- name: aguardando o ssh
+  local_action:
+    module: wait_for
+    host: "{{ pub_ip_info.publicipaddresses[item].ip_address }}"
+    port: 22
+    state: started
+  loop:
+    - 0
+    - 1
+    - 2

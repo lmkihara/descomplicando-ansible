@@ -3,13 +3,13 @@ localhost ansible_connection=local gather_facts=false
 
 [master]
 
-[worker]
+[workers]
 
 [container:children]
 master
-worker
+workers
 
-[worker:vars]
+[workers:vars]
 K8S_API_SECURE_PORT=6443
 
 [container:vars]

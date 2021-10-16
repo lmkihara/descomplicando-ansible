@@ -17,4 +17,4 @@ resource_group: giropops
 vm_name: kubernetes
 user: giropops
 pass: uptownfunk
-key: 
+key:

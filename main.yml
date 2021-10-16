@@ -18,8 +18,8 @@
   become: yes
   roles:
     - { role: criar_cluster, tags: ["criar_cluster_k8s"] }
-      #
-      #- hosts: workers
-      #  become: yes
-      #  roles:
-      #    - { role: ingressar_workers, tags: ["ingressar_workers"] }
+
+- hosts: workers
+  become: yes
+  roles:
+    - { role: ingressar_workers, tags: ["ingressar_workers"] }
