@@ -29,7 +29,8 @@
     owner: root
     group: root
     mode: '0744'
-  handler: reinciando docker
+  notify:
+  - reinciando docker
 
 - name: realizando o flush nas regras do iptables
   iptables:
