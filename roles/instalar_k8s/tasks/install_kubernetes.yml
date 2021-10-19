@@ -22,11 +22,15 @@
 - name: desativar o swap
   command: swapoff -a
 
-- name: garante o trafego na bridge
-  sysctl:
-    name: "{{ item }}"
-    value: '1'
-    state: present
-  with_values:
-  - net.brigde.bridge-nf-call-iptables
-  - net.bridge.bridge-nf-call-ip6tables
+- name: copiando o arquivo de configuracao do docker
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: '0744'
+  handler: reinciando docker
+
+- name: realizando o flush nas regras do iptables
+  iptables:
+    flush: yes

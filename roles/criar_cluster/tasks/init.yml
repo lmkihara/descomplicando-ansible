@@ -20,8 +20,8 @@
     dest: ~/.kube
     state: link
 
-- name: Configurando flannel
-  shell: kubectl apply -f {{ flannel_url }}
+- name: Configurando weavenet
+  shell: kubectl apply -f {{ weavenet_url }}
   register: flannel_deploy
 
 - name: obtendo o token do cluster
