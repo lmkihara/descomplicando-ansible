@@ -18,8 +18,10 @@
   become: yes
   roles:
     - { role: criar_cluster, tags: ["criar_cluster_k8s"] }
+    - { role: helm, tags: ["instalando_helm"] }
 
 - hosts: workers
   become: yes
   roles:
     - { role: ingressar_workers, tags: ["ingressar_workers"] }
+
