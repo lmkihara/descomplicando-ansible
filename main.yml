@@ -1,7 +1,7 @@
 ---
-- hosts: local
-  roles:
-    - {role: criando_instancias, tags: ["provisionando"]}
+#- hosts: local
+#  roles:
+#    - {role: criando_instancias, tags: ["provisionando"]}
 
 - hosts: container
   become: true
@@ -9,11 +9,11 @@
     - name: 'Atualizando repos'
       raw: 'apt update'
     - name: 'Instalando python'
-      raw: 'apt install -y python'
+      raw: 'apt install -y python3'
     - name: 'Instalando pip'
       raw: 'apt install -y python3-pip'
     - name: 'Install necessarie python libs'
-      raw: 'pip install PyYAML'
+      raw: 'pip3 install PyYAML'
     - name: 'Instalando pacotes necessarios'
       raw: 'apt install -y apt-transport-https ca-certificates curl'
   roles:
@@ -29,3 +29,8 @@
   become: true
   roles:
     - {role: ingressar_workers, tags: ["ingressar_workers"]}
+
+- hosts: master
+  become: true
+  roles:
+    - {role: monitor, tags: ["deploy_prometheus"]}

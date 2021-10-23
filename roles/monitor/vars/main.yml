@@ -1,0 +1,3 @@
+---
+# vars file for monitor
+url_prometheus_helm: https://prometheus-community.github.io/helm-charts
