@@ -2,16 +2,20 @@
 localhost ansible_connection=local gather_facts=false
 
 [master]
+40.118.229.139
 
 [workers]
+13.64.94.114
+104.42.255.198
 
 [container:children]
 master
 workers
 
 [workers:vars]
+K8S_MASTER_NODE_IP=10.0.1.4
 K8S_API_SECURE_PORT=6443
 
 [container:vars]
 ansible_user=giropops
-ansible_ssh_private_key_file=
+ansible_ssh_private_key_file=~/.ssh/azure_luis
