@@ -1,0 +1,14 @@
+---
+# tasks file for monitor
+- name: configurar repo do prometheus
+  kubernetes.core.helm_repository:
+    name: prometheus
+    repo_url: "{{ url_prometheus_helm }}"
+
+- name: instalar prometheus operator
+  kubernetes.core.helm:
+    release_name: test
+    chart_ref: prometheus/kube-prometheus-stack
+    release_namespace: monitoring
+    create_namespace: yes
+    update_repo_cache: yes

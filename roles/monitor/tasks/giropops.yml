@@ -1,0 +1,36 @@
+---
+- name: criando diretorio
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /opt/giropops
+    - /opt/giropops/logs
+    - /opt/giropops/conf
+
+- name: copiando o arquivo de deployment
+  template:
+    src: app-v1.yml.j2
+    dest: /opt/giropops/app-v1.yml
+    owner: root
+    group: root
+    mode: 0644
+  register: copiando_template
+
+- name: copiando arquivo de service
+  copy:
+    src: service-app.yml
+    dest: /opt/giropops/service-app.yml
+  register: copiando_service
+
+- name: criando o deployment
+  community.kubernetes.k8s:
+    state: present
+    src: /opt/giropops/app-v1.yml
+  register: k8s_deployment
+
+- name: criando o service
+  community.kubernetes.k8s:
+    state: present
+    src: /opt/giropops/service-app.yml
+  register: k8s_service
