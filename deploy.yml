@@ -10,6 +10,8 @@
       raw: 'apt install -y python3-pip'
     - name: 'Install necessarie python libs'
       raw: 'pip3 install PyYAML'
+    - name: 'Install python openshift'
+      raw: 'pip3 install openshift'
     - name: 'Instalando pacotes necessarios'
       raw: 'apt install -y apt-transport-https ca-certificates curl'
   roles:

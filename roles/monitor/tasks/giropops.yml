@@ -24,13 +24,15 @@
   register: copiando_service
 
 - name: criando o deployment
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     state: present
+    namespace: giropops
     src: /opt/giropops/app-v1.yml
   register: k8s_deployment
 
 - name: criando o service
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     state: present
+    namespace: giropops
     src: /opt/giropops/service-app.yml
   register: k8s_service

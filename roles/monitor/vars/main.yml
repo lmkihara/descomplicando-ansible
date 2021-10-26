@@ -1,3 +1,8 @@
 ---
 # vars file for monitor
 url_prometheus_helm: https://prometheus-community.github.io/helm-charts
+numeros_replicas: 10
+version: 1.0.0
+prometheus_scrape: "true"
+prometheus_port: 32111
+nginx_port: 80
