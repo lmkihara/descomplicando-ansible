@@ -24,15 +24,7 @@
   register: copiando_service
 
 - name: criando o deployment
-  kubernetes.core.k8s:
-    state: present
-    namespace: giropops
-    src: /opt/giropops/app-v1.yml
-  register: k8s_deployment
+  shell: kubectl apply -f /opt/giropops/app-v1.yml
 
 - name: criando o service
-  kubernetes.core.k8s:
-    state: present
-    namespace: giropops
-    src: /opt/giropops/service-app.yml
-  register: k8s_service
+  shell: kubectl apply -f /opt/giropops/service-app.yml
