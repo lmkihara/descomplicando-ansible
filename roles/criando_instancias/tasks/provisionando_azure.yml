@@ -132,7 +132,7 @@
     ssh_password_enabled: false
     ssh_public_keys:
       - path: "/home/{{ user }}/.ssh/authorized_keys"
-        key_data: "{{ key }}"
+        key_data: "{{ hostvars['SSH']['key'] }}"
     network_interfaces: "{{ vm_name }}_{{ item }}"
     image:
       offer: "{{ offer }}"

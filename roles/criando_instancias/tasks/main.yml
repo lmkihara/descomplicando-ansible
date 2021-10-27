@@ -1,4 +1,5 @@
 ---
 # tasks file for criando-instancias
 #- include: provisioning.yml
+- include: gen_ssh.yml
 - include: provisionando_azure.yml

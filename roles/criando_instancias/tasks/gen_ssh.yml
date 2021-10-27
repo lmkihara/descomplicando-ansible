@@ -1,0 +1,24 @@
+- name: gerando chave ssh
+  local_action:
+    module: community.crypto.openssh_keypair
+    path: /tmp/azure
+    type: rsa
+    size: 2048
+    force: yes
+  register: ssh_key
+
+- name: adicionando chave no arquivo de host
+  local_action:
+    module: lineinfile
+    path: ./hosts
+    regexp: '^ansible_ssh_private_key_file='
+    line: "ansible_ssh_private_key_file={{ ssh_key.filename }}"
+
+- name: adicionando chave num dummy host
+  add_host:
+    name: "SSH"
+    key: "{{ ssh_key.public_key }}"
+
+- name:
+  debug:
+    msg: "{{ hostvars['SSH']['key']}}"
